@@ -717,7 +717,7 @@ const MintTwo = (props: HomeProps) => {
                                                                 (whitelistTokenBalance == 0 && !wallet.connected)?
                                                                 <h1 className="av-special-heading-tag">  
                                                                 </h1>:
-                                                                (whitelistTokenBalance < 250)?
+                                                                (whitelistTokenBalance < 250 || (balance || 0) < 1 && wallet.connected)?
                                                                 <h1 className="av-special-heading-tag">
                                                                     Sorry&hellip;
                                                                 </h1>:
@@ -745,9 +745,9 @@ const MintTwo = (props: HomeProps) => {
                                                             <p style={{ textAlign: "center" }}><em>
                                                             {
                                                             
-                                                            (!wallet.connected) ? 
+                                                                 (!wallet.connected) ? 
                                                                   <h3>Click Here To Connect Wallet</h3>:
-                                                                  (wallet && isActive && whitelistEnabled && (whitelistTokenBalance < 250 || whitelistTokenBalance == 0) && !isBurnToken)?
+                                                                  ((whitelistTokenBalance < 250 || whitelistTokenBalance == 0) && !isBurnToken)?
                                                                  <>
                                                                       <p> You cannot Reserve a Grapevine NFTree You need at least
                                                                           250 DBC's in your wallet.
@@ -762,17 +762,31 @@ const MintTwo = (props: HomeProps) => {
                                                                               </div>
                                                                               </ >
                                                                  :
+                                                                 (wallet.connected && (balance || 0) < 1) ? 
+                                                                 <>
+                                                                 <p> You cannot Reserve a Grapevine NFTree You need at least
+                                                                   1 SOLANA in your wallet.
+                                                               </p>
+                                                             
+                                                             <div className="avia-button-wrap avia-button-center  avia-builder-el-8 el_after_av_button  avia-builder-el-last">
+                                                             <a href="mint-2.html" className="avia-button  avia-color-theme-color avia-icon_select-no avia-size-small avia-position-center ">
+                                                                 <span className="avia_iconbox_title">Click here how to get more
+                                                                     SOLANA
+                                                                     </span>
+                                                                     </a>
+                                                                 </div>
+                                                                 </>:
                                                                 (whitelistTokenBalance > 250  && !isBurnToken)?
                                                                     <p>You have enough tokens to reserve a Grapevine NFTree for 250 DBC</p> :
                                                                     <>
                                                                         <p> You cannot Reserve a Grapevine NFTree You need at least
-                                                                          250 DBC's in your wallet.
+                                                                          1 Solana in your wallet.
                                                                       </p>
                                                                     
                                                                     <div className="avia-button-wrap avia-button-center  avia-builder-el-8 el_after_av_button  avia-builder-el-last">
                                                                     <a href="mint-2.html" className="avia-button  avia-color-theme-color avia-icon_select-no avia-size-small avia-position-center ">
                                                                         <span className="avia_iconbox_title">Click here how to get more
-                                                                            DBC
+                                                                            Solana
                                                                             </span>
                                                                             </a>
                                                                         </div>
@@ -796,9 +810,11 @@ const MintTwo = (props: HomeProps) => {
                                                                 {
                                                                     (!wallet.connected)?
                                                                     <h3 style={{marginTop:"14px", color:"#fff"}}>Connect Wallet</h3>:
-                                                                    (wallet.connected && whitelistTokenBalance == 0 || whitelistTokenBalance <250)?
-                                                                    <h3 style={{marginTop:"14px", color:"#fff"}}>No Funds</h3>:
-                                                                    (wallet.connected && whitelistTokenBalance > 250)?
+                                                                    (wallet.connected && whitelistTokenBalance == 0 || whitelistTokenBalance <250 || (balance || 0) < 1)?
+                                                                    <h3 style={{marginTop:"14px", color:"#fff"}}>No Funds </h3>:
+                                                                    // (wallet.connected &&(balance || 0) < 1)?
+                                                                    // <h3 style={{marginTop:"14px", color:"#fff"}}>No Funds</h3>:
+                                                                    (wallet.connected && whitelistTokenBalance > 250 && balance && balance > 1)?
                                                                     <MintButtonContainer
                                                                     >
                                                                             {!isActive && !isEnded && candyMachine?.state.goLiveDate && (!isWLOnly || whitelistTokenBalance > 0) ? (
